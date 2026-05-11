@@ -41,22 +41,24 @@ poetry run uvicorn bluearchive_ics.main:app --host 0.0.0.0 --port 8000
 
 项目首页，展示基本信息和使用说明。
 
-### `GET /ba.ics`
+### `GET /{server}/{type}.ics`
 
 返回 .ics 日历文件。
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | `server` | string | ❌ | 区服：`cn`（国服，默认）、`in`（国际服）、`jp`（日服） |
-| `filter` | string | ❌ | 事件类型筛选，可重复提供。可选值：`assault`、`event`、`card`。不提供则返回全部类型 |
+| `type` | string | ❌ | 事件类型：`ba` 或 `all`（全部）、`card`（卡池）、`assault`（总力战）、`event`（活动） |
 
 ### 请求示例
 
 ```
-GET /ba.ics
-GET /ba.ics?server=jp
-GET /ba.ics?server=cn&filter=event&filter=card
-GET /ba.ics?server=in&filter=assault
+GET /ba.ics                # 国服全部（兼容旧链接）
+GET /cn/ba.ics             # 国服全部
+GET /jp/card.ics           # 日服卡池
+GET /in/assault.ics        # 国际服总力战
+GET /event.ics             # 国服活动（默认国服）
+GET /cn/event.ics          # 国服活动
 ```
 
 ### 日历订阅
@@ -64,7 +66,8 @@ GET /ba.ics?server=in&filter=assault
 大多数日历应用支持通过 URL 订阅 .ics 文件，将以下链接添加到你的日历应用中即可自动同步：
 
 ```
-https://your-domain.com/ba.ics?server=jp
+https://your-domain.com/jp/ba.ics
+https://your-domain.com/cn/card.ics
 ```
 
 ## 🔧 数据来源

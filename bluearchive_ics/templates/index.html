@@ -50,8 +50,7 @@
         color: #4a56e2;
       }
 
-      p,
-      li {
+      p {
         line-height: 1.7;
         margin-bottom: 8px;
       }
@@ -166,30 +165,31 @@
       <div class="domain-hint">
         完整地址：<code id="full-url">加载中...</code>
       </div>
-      <pre><code>GET /ba.ics</code></pre>
+
+      <h2>📋 路由格式</h2>
+      <pre><code>/{server}/{type}.ics
+/{type}.ics          <span style="color: #888">（默认国服）</span>
+/ba.ics              <span style="color: #888">（兼容旧链接）</span></code></pre>
 
       <h2>📋 参数说明</h2>
       <table>
         <thead>
           <tr>
             <th>参数</th>
-            <th>类型</th>
-            <th>必填</th>
+            <th>可选值</th>
             <th>说明</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>server</td>
-            <td>string</td>
-            <td>❌</td>
-            <td>区服：<code>cn</code> 国服（默认）/ <code>in</code> 国际服 / <code>jp</code> 日服</td>
+            <td><code>cn</code> / <code>in</code> / <code>jp</code></td>
+            <td>区服：国服（默认）/ 国际服 / 日服</td>
           </tr>
           <tr>
-            <td>filter</td>
-            <td>string</td>
-            <td>❌</td>
-            <td>事件类型筛选，可重复。可选值：<code>assault</code> 总力战 / <code>event</code> 活动 / <code>card</code> 卡池</td>
+            <td>type</td>
+            <td><code>ba</code> / <code>all</code> / <code>card</code> / <code>assault</code> / <code>event</code></td>
+            <td>事件类型：全部 / 全部 / 卡池 / 总力战 / 活动</td>
           </tr>
         </tbody>
       </table>
@@ -210,28 +210,29 @@
 
     <script>
       (function () {
-        // 获取当前域名
         var baseUrl = window.location.origin;
 
-        // 更新完整 URL 显示
-        var urlElement = document.getElementById("full-url");
-        urlElement.textContent = baseUrl + "/ba.ics?server=cn";
+        // 更新完整 URL
+        document.getElementById("full-url").textContent = baseUrl + "/cn/ba.ics";
 
         // 更新示例
-        var examplesElement = document.getElementById("examples");
         var examples = [
-          { path: "/ba.ics", desc: "国服（默认）" },
-          { path: "/ba.ics?server=jp", desc: "日服" },
-          { path: "/ba.ics?server=in", desc: "国际服" },
-          { path: "/ba.ics?server=cn&filter=event&filter=card", desc: "国服，仅活动和卡池" },
-          { path: "/ba.ics?server=in&filter=assault", desc: "国际服，仅总力战" },
+          "/cn/ba.ics",
+          "/jp/ba.ics",
+          "/in/ba.ics",
+          "/cn/card.ics",
+          "/cn/assault.ics",
+          "/cn/event.ics",
+          "/card.ics",
+          "/assault.ics",
         ];
 
-        var html = "";
-        examples.forEach(function (ex) {
-          html += "<code>" + baseUrl + ex.path + "</code>";
-        });
-        examplesElement.innerHTML = html;
+        var el = document.getElementById("examples");
+        el.innerHTML = examples
+          .map(function (path) {
+            return "<code>" + baseUrl + path + "</code>";
+          })
+          .join("");
       })();
     </script>
   </body>

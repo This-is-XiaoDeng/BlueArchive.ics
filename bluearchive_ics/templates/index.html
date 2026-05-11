@@ -20,14 +20,15 @@
         align-items: center;
         justify-content: center;
         color: #333;
+        padding: 20px;
       }
 
       .card {
         background: white;
         border-radius: 16px;
         padding: 48px;
-        max-width: 640px;
-        width: 90%;
+        max-width: 720px;
+        width: 100%;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       }
 
@@ -45,7 +46,7 @@
 
       h2 {
         font-size: 1.2em;
-        margin: 24px 0 12px;
+        margin: 28px 0 12px;
         color: #4a56e2;
       }
 
@@ -91,8 +92,62 @@
         margin-right: 8px;
       }
 
-      ul {
-        padding-left: 20px;
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        font-size: 0.95em;
+      }
+
+      th, td {
+        padding: 10px 14px;
+        text-align: left;
+        border-bottom: 1px solid #e8e8f0;
+      }
+
+      th {
+        background: #f5f5fa;
+        color: #4a56e2;
+        font-weight: 600;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      td:first-child {
+        font-family: "Fira Code", "Consolas", monospace;
+        font-size: 0.9em;
+        white-space: nowrap;
+      }
+
+      .example-block {
+        background: #f0f0f5;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 12px 0;
+      }
+
+      .example-block code {
+        background: transparent;
+        padding: 0;
+        display: block;
+        line-height: 2;
+      }
+
+      .domain-hint {
+        background: #e8f4fd;
+        border-left: 4px solid #4a56e2;
+        padding: 12px 16px;
+        border-radius: 0 8px 8px 0;
+        margin: 16px 0;
+        font-size: 0.95em;
+      }
+
+      .domain-hint code {
+        background: rgba(74, 86, 226, 0.1);
+        color: #4a56e2;
+        font-weight: 600;
       }
     </style>
   </head>
@@ -108,24 +163,41 @@
 
       <h2>🚀 使用方法</h2>
       <p>订阅日历链接：</p>
-      <pre><code>GET /ba.ics?server={server}&amp;filter={type}</code></pre>
+      <div class="domain-hint">
+        完整地址：<code id="full-url">加载中...</code>
+      </div>
+      <pre><code>GET /ba.ics</code></pre>
 
       <h2>📋 参数说明</h2>
-      <ul>
-        <li>
-          <code>server</code>（可选，默认 <code>cn</code>）：<code>cn</code>
-          国服 / <code>in</code> 国际服 / <code>jp</code> 日服
-        </li>
-        <li>
-          <code>filter</code>（可选，可重复）：<code>assault</code> 总力战 /
-          <code>event</code> 活动 / <code>card</code> 卡池
-        </li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>server</td>
+            <td>string</td>
+            <td>❌</td>
+            <td>区服：<code>cn</code> 国服（默认）/ <code>in</code> 国际服 / <code>jp</code> 日服</td>
+          </tr>
+          <tr>
+            <td>filter</td>
+            <td>string</td>
+            <td>❌</td>
+            <td>事件类型筛选，可重复。可选值：<code>assault</code> 总力战 / <code>event</code> 活动 / <code>card</code> 卡池</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>💡 示例</h2>
-      <pre><code>/ba.ics?server=jp
-/ba.ics?server=cn&amp;filter=event&amp;filter=card
-/ba.ics?server=in&amp;filter=assault</code></pre>
+      <div class="example-block" id="examples">
+        <code>加载中...</code>
+      </div>
 
       <h2>📖 开源</h2>
       <p>
@@ -135,5 +207,32 @@
         </a>
       </p>
     </div>
+
+    <script>
+      (function () {
+        // 获取当前域名
+        var baseUrl = window.location.origin;
+
+        // 更新完整 URL 显示
+        var urlElement = document.getElementById("full-url");
+        urlElement.textContent = baseUrl + "/ba.ics?server=cn";
+
+        // 更新示例
+        var examplesElement = document.getElementById("examples");
+        var examples = [
+          { path: "/ba.ics", desc: "国服（默认）" },
+          { path: "/ba.ics?server=jp", desc: "日服" },
+          { path: "/ba.ics?server=in", desc: "国际服" },
+          { path: "/ba.ics?server=cn&filter=event&filter=card", desc: "国服，仅活动和卡池" },
+          { path: "/ba.ics?server=in&filter=assault", desc: "国际服，仅总力战" },
+        ];
+
+        var html = "";
+        examples.forEach(function (ex) {
+          html += "<code>" + baseUrl + ex.path + "</code>";
+        });
+        examplesElement.innerHTML = html;
+      })();
+    </script>
   </body>
 </html>

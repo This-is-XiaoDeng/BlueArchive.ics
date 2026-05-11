@@ -64,7 +64,7 @@ async def fetch_card_pool(server_id: int) -> list[GameEvent]:
         events.append(
             GameEvent(
                 id=item.get("id", 0),
-                title=item.get("title", "未知卡池"),
+                title=item.get("name", "未知卡池"),
                 start_at=item.get("start_at", 0),
                 end_at=item.get("end_at", 0),
                 event_type=EventType.CARD,

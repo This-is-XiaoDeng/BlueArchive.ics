@@ -1,4 +1,4 @@
-"""gamekee 数据采集模块"""
+"""GameKee 数据采集模块"""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ class GameEvent:
 
 
 async def _fetch_json(url: str, params: dict[str, Any] | None = None) -> dict:
-    """请求 gamekee API 并返回 JSON"""
+    """请求 GameKee API 并返回 JSON"""
     async with httpx.AsyncClient(timeout=30.0) as client:
         resp = await client.get(url, params=params, headers=GAMEKEE_HEADERS)
         resp.raise_for_status()

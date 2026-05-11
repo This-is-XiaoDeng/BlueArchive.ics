@@ -4,7 +4,7 @@
 
 ## ✨ 功能
 
-- 从 [gamekee](https://www.gamekee.com/) 自动采集以下事件：
+- 从 [GameKee](https://www.gamekee.com/) 自动采集以下事件：
   - **总力战 / 大决战**（assault）
   - **常规活动**（event）
   - **卡池**（card）
@@ -69,7 +69,7 @@ https://your-domain.com/ba.ics?server=jp
 
 ## 🔧 数据来源
 
-数据采集自 [gamekee](https://www.gamekee.com/) 蔚蓝档案专区，参考了 [Moonlark](https://github.com/Moonlark-Dev/Moonlark) 项目的实现。
+数据采集自 [GameKee](https://www.gamekee.com/) 蔚蓝档案专区，参考了 [Moonlark](https://github.com/Moonlark-Dev/Moonlark) 项目的实现。
 
 ## 📄 许可证
 

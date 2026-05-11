@@ -95,7 +95,7 @@ async def fetch_activities(server_id: int) -> list[GameEvent]:
             GameEvent(
                 id=item.get("id", 0),
                 title=item.get("title", "未知活动"),
-                start_at=item.get("start_at", 0),
+                start_at=item.get("begin_at", 0),
                 end_at=item.get("end_at", 0),
                 event_type=EventType.EVENT,
                 picture=item.get("picture", ""),
@@ -126,7 +126,7 @@ async def fetch_total_assault(server_id: int) -> list[GameEvent]:
             GameEvent(
                 id=item.get("id", 0),
                 title=item.get("title", "总力战"),
-                start_at=item.get("start_at", 0),
+                start_at=item.get("begin_at", 0),
                 end_at=item.get("end_at", 0),
                 event_type=EventType.ASSAULT,
                 picture=item.get("picture", ""),

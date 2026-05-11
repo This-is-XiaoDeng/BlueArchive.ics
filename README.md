@@ -47,12 +47,13 @@ poetry run uvicorn bluearchive_ics.main:app --host 0.0.0.0 --port 8000
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `server` | string | ✅ | 区服：`cn`（国服）、`in`（国际服）、`jp`（日服） |
+| `server` | string | ❌ | 区服：`cn`（国服，默认）、`in`（国际服）、`jp`（日服） |
 | `filter` | string | ❌ | 事件类型筛选，可重复提供。可选值：`assault`、`event`、`card`。不提供则返回全部类型 |
 
 ### 请求示例
 
 ```
+GET /ba.ics
 GET /ba.ics?server=jp
 GET /ba.ics?server=cn&filter=event&filter=card
 GET /ba.ics?server=in&filter=assault

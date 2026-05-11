@@ -76,7 +76,7 @@ INDEX_HTML = """<!DOCTYPE html>
 
   <h2>📋 参数说明</h2>
   <ul>
-    <li><code>server</code>（必填）：<code>cn</code> 国服 / <code>in</code> 国际服 / <code>jp</code> 日服</li>
+    <li><code>server</code>（可选，默认 <code>cn</code>）：<code>cn</code> 国服 / <code>in</code> 国际服 / <code>jp</code> 日服</li>
     <li><code>filter</code>（可选，可重复）：<code>assault</code> 总力战 / <code>event</code> 活动 / <code>card</code> 卡池</li>
   </ul>
 
@@ -103,7 +103,7 @@ async def index():
 
 @app.get("/ba.ics")
 async def ba_ics(
-    server: ServerType,
+    server: ServerType = ServerType.CN,
     filter: Annotated[list[EventType] | None, Query()] = None,
 ):
     """返回蔚蓝档案活动日历 .ics 文件

@@ -63,15 +63,6 @@
         font-size: 0.9em;
       }
 
-      pre {
-        background: #f0f0f5;
-        padding: 16px;
-        border-radius: 8px;
-        overflow-x: auto;
-        margin: 12px 0;
-        font-size: 0.9em;
-      }
-
       a {
         color: #4a56e2;
         text-decoration: none;
@@ -120,20 +111,6 @@
         white-space: nowrap;
       }
 
-      .example-block {
-        background: #f0f0f5;
-        border-radius: 8px;
-        padding: 16px;
-        margin: 12px 0;
-      }
-
-      .example-block code {
-        background: transparent;
-        padding: 0;
-        display: block;
-        line-height: 2;
-      }
-
       .domain-hint {
         background: #e8f4fd;
         border-left: 4px solid #4a56e2;
@@ -156,85 +133,88 @@
       <p class="subtitle">蔚蓝档案活动日历订阅服务</p>
 
       <p>
-        将《蔚蓝档案》的<strong>卡池</strong>、<strong>活动</strong>和<strong>总力战</strong>信息转换为标准
-        iCalendar (.ics) 日历文件，可导入任何日历应用。
+        将《蔚蓝档案》的<strong>卡池</strong>、<strong>活动</strong>和<strong>总力战</strong>转换为
+        iCalendar 日历文件，导入任意日历应用即可自动同步。
       </p>
 
       <h2>🚀 使用方法</h2>
-      <p>订阅日历链接：</p>
       <div class="domain-hint">
         完整地址：<code id="full-url">加载中...</code>
       </div>
+      <p>将上方链接添加到日历应用的「订阅」功能中即可。</p>
 
-      <h2>📋 路由格式</h2>
-      <ul>
-        <li><code>/{server}/{type}.ics</code> — 指定区服和类型</li>
-        <li><code>/{type}.ics</code> — 默认国服</li>
-        <li><code>/ba.ics</code> — 兼容旧链接</li>
-      </ul>
-
-      <h2>📋 参数说明</h2>
+      <h2>📋 路由一览</h2>
+      <p>所有路径均可加 <code>/{server}/</code> 前缀（<code>cn</code> / <code>in</code> / <code>jp</code>），默认国服。</p>
       <table>
         <thead>
           <tr>
-            <th>参数</th>
-            <th>可选值</th>
-            <th>说明</th>
+            <th>路径</th>
+            <th>内容</th>
+            <th>卡池合并</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>server</td>
-            <td><code>cn</code> / <code>in</code> / <code>jp</code></td>
-            <td>区服：国服（默认）/ 国际服 / 日服</td>
+            <td>/ba.ics</td>
+            <td>全部事件</td>
+            <td>✅ 合并</td>
           </tr>
           <tr>
-            <td>type</td>
-            <td><code>ba</code> / <code>all</code> / <code>card</code> / <code>assault</code> / <code>event</code></td>
-            <td>事件类型：全部 / 全部 / 卡池 / 总力战 / 活动</td>
+            <td>/all.ics</td>
+            <td>全部事件</td>
+            <td>❌ 不合并</td>
+          </tr>
+          <tr>
+            <td>/card.ics</td>
+            <td>仅卡池</td>
+            <td>❌ 不合并</td>
+          </tr>
+          <tr>
+            <td>/card/merged.ics</td>
+            <td>仅卡池</td>
+            <td>✅ 合并</td>
+          </tr>
+          <tr>
+            <td>/assault.ics</td>
+            <td>仅总力战</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>/event.ics</td>
+            <td>仅活动</td>
+            <td>—</td>
           </tr>
         </tbody>
       </table>
 
       <h2>💡 示例</h2>
-      <div class="example-block" id="examples">
-        <code>加载中...</code>
-      </div>
+      <div id="examples" style="line-height: 2.2;"></div>
 
       <h2>📖 开源</h2>
       <p>
         <span class="badge">AGPL-3.0</span>
-        <a href="https://github.com/This-is-XiaoDeng/BlueArchive.ics" target="_blank">
-          GitHub 仓库
-        </a>
+        <a href="https://github.com/This-is-XiaoDeng/BlueArchive.ics" target="_blank">GitHub</a>
       </p>
     </div>
 
     <script>
       (function () {
-        var baseUrl = window.location.origin;
+        var base = window.location.origin;
+        document.getElementById("full-url").textContent = base + "/cn/ba.ics";
 
-        // 更新完整 URL
-        document.getElementById("full-url").textContent = baseUrl + "/cn/ba.ics";
-
-        // 更新示例
-        var examples = [
+        var paths = [
           "/cn/ba.ics",
+          "/cn/all.ics",
           "/jp/ba.ics",
-          "/in/ba.ics",
           "/cn/card.ics",
+          "/cn/card/merged.ics",
           "/cn/assault.ics",
           "/cn/event.ics",
-          "/card.ics",
-          "/assault.ics",
         ];
 
-        var el = document.getElementById("examples");
-        el.innerHTML = examples
-          .map(function (path) {
-            return "<code>" + baseUrl + path + "</code>";
-          })
-          .join("");
+        document.getElementById("examples").innerHTML = paths
+          .map(function (p) { return "<code>" + base + p + "</code>"; })
+          .join("<br>");
       })();
     </script>
   </body>

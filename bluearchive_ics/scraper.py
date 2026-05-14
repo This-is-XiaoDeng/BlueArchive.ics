@@ -156,3 +156,46 @@ async def fetch_all_events(server: str) -> list[GameEvent]:
         )
 
     return assaults + activities + cards
+
+
+def merge_card_pools(events: list[GameEvent]) -> list[GameEvent]:
+    """合并具有相同开始和结束时间的卡池
+
+    Args:
+        events: 事件列表
+
+    Returns:
+        合并后的事件列表（仅合并卡池，其他事件不变）
+    """
+    from collections import defaultdict
+
+    card_pools: dict[tuple[int, int], list[GameEvent]] = defaultdict(list)
+    other_events: list[GameEvent] = []
+
+    for event in events:
+        if event.event_type == EventType.CARD:
+            card_pools[(event.start_at, event.end_at)].append(event)
+        else:
+            other_events.append(event)
+
+    merged_cards: list[GameEvent] = []
+    for (start_at, end_at), pools in card_pools.items():
+        if len(pools) == 1:
+            merged_cards.append(pools[0])
+        else:
+            # 合并多个卡池为一条
+            titles = " / ".join(p.title for p in pools)
+            # 使用第一个卡池的 id 作为基础，加上 hash 保证唯一性
+            merged_id = pools[0].id
+            merged_cards.append(
+                GameEvent(
+                    id=merged_id,
+                    title=titles,
+                    start_at=start_at,
+                    end_at=end_at,
+                    event_type=EventType.CARD,
+                    picture=pools[0].picture,
+                )
+            )
+
+    return other_events + merged_cards

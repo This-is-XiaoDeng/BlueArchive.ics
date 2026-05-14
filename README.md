@@ -11,6 +11,7 @@
 - 支持三个区服：国服（cn）、国际服（in）、日服（jp）
 - 返回标准 .ics 日历文件，可导入 Google Calendar、Apple Calendar 等任意日历应用
 - 支持按事件类型筛选
+- 相同时间的卡池自动合并显示（可通过 `/full-card-info.ics` 查看完整信息）
 
 ## 🚀 快速开始
 
@@ -50,12 +51,26 @@ poetry run uvicorn bluearchive_ics.main:app --host 0.0.0.0 --port 8000
 | `server` | string | ❌ | 区服：`cn`（国服，默认）、`in`（国际服）、`jp`（日服） |
 | `type` | string | ❌ | 事件类型：`ba` 或 `all`（全部）、`card`（卡池）、`assault`（总力战）、`event`（活动） |
 
+### 专用终结点
+
+| 路径 | 卡池合并 | 说明 |
+|------|---------|------|
+| `/ba.ics` | ✅ | 全部事件（兼容旧链接） |
+| `/all.ics` | ✅ | 全部事件 |
+| `/card/merged.ics` | ✅ | 仅卡池（合并相同时间） |
+| `/full-card-info.ics` | ❌ | 仅卡池（不合并，完整信息） |
+| `/assault.ics` | ❌ | 仅总力战 |
+| `/event.ics` | ❌ | 仅活动 |
+
+以上路径均可加 `/{server}/` 前缀（cn/in/jp）。
+
 ### 请求示例
 
 ```
 GET /ba.ics                # 国服全部（兼容旧链接）
 GET /cn/ba.ics             # 国服全部
-GET /jp/card.ics           # 日服卡池
+GET /jp/card.ics           # 日服卡池（合并）
+GET /cn/full-card-info.ics # 国服卡池（完整信息）
 GET /in/assault.ics        # 国际服总力战
 GET /event.ics             # 国服活动（默认国服）
 GET /cn/event.ics          # 国服活动

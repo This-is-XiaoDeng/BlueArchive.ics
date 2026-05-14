@@ -155,7 +155,14 @@ async def fetch_all_events(server: str) -> list[GameEvent]:
             cards_task, activities_task, assault_task
         )
 
-    return assaults + activities + cards
+    # 按 ID 去重（总力战同时存在于 activities 和 assaults 中）
+    seen: set[int] = set()
+    unique: list[GameEvent] = []
+    for event in assaults + activities + cards:
+        if event.id not in seen:
+            seen.add(event.id)
+            unique.append(event)
+    return unique
 
 
 def merge_card_pools(events: list[GameEvent]) -> list[GameEvent]:

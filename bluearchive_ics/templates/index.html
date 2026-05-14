@@ -125,16 +125,6 @@
         color: #4a56e2;
         font-weight: 600;
       }
-
-      .note {
-        background: #fff8e1;
-        border-left: 4px solid #ffa000;
-        padding: 12px 16px;
-        border-radius: 0 8px 8px 0;
-        margin: 16px 0;
-        font-size: 0.9em;
-        color: #5d4037;
-      }
     </style>
   </head>
   <body>
@@ -166,28 +156,23 @@
         <tbody>
           <tr>
             <td>/ba.ics</td>
-            <td>全部事件（兼容旧链接）</td>
-            <td>✅</td>
+            <td>全部事件</td>
+            <td>✅ 合并</td>
           </tr>
           <tr>
             <td>/all.ics</td>
             <td>全部事件</td>
-            <td>✅</td>
+            <td>❌ 不合并</td>
           </tr>
           <tr>
             <td>/card.ics</td>
             <td>仅卡池</td>
-            <td>✅</td>
+            <td>❌ 不合并</td>
           </tr>
           <tr>
             <td>/card/merged.ics</td>
-            <td>仅卡池（显式合并）</td>
-            <td>✅</td>
-          </tr>
-          <tr>
-            <td>/full-card-info.ics</td>
-            <td>仅卡池（完整信息）</td>
-            <td>❌</td>
+            <td>仅卡池</td>
+            <td>✅ 合并</td>
           </tr>
           <tr>
             <td>/assault.ics</td>
@@ -201,10 +186,6 @@
           </tr>
         </tbody>
       </table>
-
-      <div class="note">
-        💡 相同开始和结束时间的卡池会自动合并显示。如需查看每条卡池的完整信息，请使用 <code>/full-card-info.ics</code>。
-      </div>
 
       <h2>💡 示例</h2>
       <div id="examples" style="line-height: 2.2;"></div>
@@ -223,9 +204,10 @@
 
         var paths = [
           "/cn/ba.ics",
+          "/cn/all.ics",
           "/jp/ba.ics",
           "/cn/card.ics",
-          "/cn/full-card-info.ics",
+          "/cn/card/merged.ics",
           "/cn/assault.ics",
           "/cn/event.ics",
         ];

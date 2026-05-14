@@ -31,7 +31,6 @@ class EventTypeParam(str, Enum):
     ALL = "all"
     CARD = "card"
     CARD_MERGED = "card/merged"
-    FULL_CARD = "full-card-info"
     ASSAULT = "assault"
     EVENT = "event"
 
@@ -39,10 +38,9 @@ class EventTypeParam(str, Enum):
 # 映射：路径参数 -> (筛选集合, 是否合并卡池)
 FILTER_MAP: dict[EventTypeParam, tuple[set[EventType] | None, bool]] = {
     EventTypeParam.BA: (None, True),
-    EventTypeParam.ALL: (None, True),
-    EventTypeParam.CARD: ({EventType.CARD}, True),
+    EventTypeParam.ALL: (None, False),
+    EventTypeParam.CARD: ({EventType.CARD}, False),
     EventTypeParam.CARD_MERGED: ({EventType.CARD}, True),
-    EventTypeParam.FULL_CARD: ({EventType.CARD}, False),
     EventTypeParam.ASSAULT: ({EventType.ASSAULT}, False),
     EventTypeParam.EVENT: ({EventType.EVENT}, False),
 }
@@ -72,21 +70,15 @@ async def card_merged_ics_default():
     return await _generate_ics(ServerType.CN, EventTypeParam.CARD_MERGED)
 
 
-@app.get("/full-card-info.ics")
-async def full_card_info_ics_default():
-    """国服完整卡池信息（不合并）"""
-    return await _generate_ics(ServerType.CN, EventTypeParam.FULL_CARD)
-
-
 @app.get("/{server}/ba.ics")
 async def ba_ics_server(server: ServerType):
-    """指定服务器的全部事件"""
+    """指定服务器的全部事件（合并卡池）"""
     return await _generate_ics(server, EventTypeParam.BA)
 
 
 @app.get("/{server}/all.ics")
 async def all_ics_server(server: ServerType):
-    """指定服务器的全部事件"""
+    """指定服务器的全部事件（不合并卡池）"""
     return await _generate_ics(server, EventTypeParam.ALL)
 
 
@@ -94,12 +86,6 @@ async def all_ics_server(server: ServerType):
 async def card_merged_ics_server(server: ServerType):
     """指定服务器的合并卡池"""
     return await _generate_ics(server, EventTypeParam.CARD_MERGED)
-
-
-@app.get("/{server}/full-card-info.ics")
-async def full_card_info_ics_server(server: ServerType):
-    """指定服务器的完整卡池信息（不合并）"""
-    return await _generate_ics(server, EventTypeParam.FULL_CARD)
 
 
 @app.get("/{server}/{type}.ics")
